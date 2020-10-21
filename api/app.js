@@ -44,7 +44,7 @@ client.on('message', async message => {
     const connection = await message.member.voice.channel.join();
 
     // create a dispatcher
-    const dispatcher = connection.play('./media/test.ogg', { volume: .5});
+    const dispatcher = connection.play(config.testFile, { volume: .5});
 
     dispatcher.on('start', () => {
       console.log('audio.mp3 is now playing!');
