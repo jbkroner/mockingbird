@@ -10,6 +10,11 @@ var usersRouter = require('./routes/users');
 var testAPIRouter = require("./routes/testAPI");
 var testDiscord = require("./routes/testDiscord");
 
+/** discord imports */
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const config = require('./config.json');
+
 var app = express();
 
 // view engine setup
@@ -27,6 +32,14 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use('/testDiscord', testDiscord);
+
+/** discord bot login and logging */
+client.login(config.key);
+
+
+client.once('ready', () => {
+	console.log('mockingbird:  logged in');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
