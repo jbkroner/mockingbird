@@ -36,6 +36,29 @@ app.use('/testDiscord', testDiscord);
 /** discord bot login and logging */
 client.login(config.key);
 
+/** discord audio stuff */
+
+// join users voice channel when they send a message
+client.on('message', async message => {
+  if (message.member.voice.channel) {
+    const connection = await message.member.voice.channel.join();
+
+    // create a dispatcher
+    const dispatcher = connection.play('./media/test.ogg', { volume: .5});
+
+    dispatcher.on('start', () => {
+      console.log('audio.mp3 is now playing!');
+    });
+
+    dispatcher.on('finish', () => {
+      console.log('audio.mp3 has finished playing!');
+    });
+
+    // Always remember to handle errors appropriately!
+    dispatcher.on('error', console.error);
+  }
+})
+
 
 client.once('ready', () => {
 	console.log('mockingbird:  logged in');
