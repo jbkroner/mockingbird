@@ -1,3 +1,4 @@
 {
-    "key":"<YOUR KEY HERE! DO NOT COMMIT TO PUBLIC REPO!!!>"
+    "key":"<YOUR KEY HERE! DO NOT COMMIT TO PUBLIC REPO!!!>",
+    "tesfFile": "<path/to/test/file.ogg"
 }
