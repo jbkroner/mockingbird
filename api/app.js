@@ -52,6 +52,7 @@ client.on('message', async message => {
 
     dispatcher.on('finish', () => {
       console.log('audio.mp3 has finished playing!');
+      message.member.voice.channel.leave();
     });
 
     // Always remember to handle errors appropriately!
