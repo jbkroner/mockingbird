@@ -4,6 +4,9 @@ import './App.css';
 
 
 
+function sayHello(){
+  alert('you clicked me!!!');
+}
 
 export default class App extends Component {
 
@@ -28,6 +31,7 @@ export default class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p className="App-intro">;{this.state.apiResponse}</p>
+          <button onClick={sayHello}>Play Birb Noises</button>
           <a
             className="App-link"
             href="https://reactjs.org"
