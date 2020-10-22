@@ -34,7 +34,7 @@ app.use("/testAPI", testAPIRouter);
 app.use('/testDiscord', testDiscord);
 
 /** discord bot login and logging */
-client.login(config.key);
+// client.login(config.key);
 
 /** discord audio stuff */
 
