@@ -10,8 +10,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./config.json');
 
-/** discord bot login and logging */
-client.login(config.key); 
 
 /** discord audio stuff */
 
@@ -59,6 +57,7 @@ client.once('ready', () => {
 // login
 app.post('/api/login/', (req, res) => {
     botLogin();
+    res.send('bot logged in!');
 });
 
 // logout
@@ -67,6 +66,7 @@ app.post('/api/logout/', (req, res) => {
     console.log('trying to logout bot...')
     client.destroy(); 
     console.log('bot logged out!');
+    res.send('bot logged out!')
 });
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
