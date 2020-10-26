@@ -69,15 +69,14 @@ app.post('/api/logout/', (req, res) => {
     res.send('bot logged out!')
 });
 
-// join a voice channel and play a sound
+// getChannels
 app.post('/api/getChannels', (req, res) => {
 
   // see if we have a valid client -- null is not the right thing to check for
   if(client == null) res.send('client is null!')
 
-
-
   res.send(client.channels)
 })
+
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
