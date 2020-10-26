@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const port = 9000;
 
+
 /** discord imports */
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -39,7 +40,6 @@ let audioFiles = [];
 
 app.use(cors());
 
-// configure body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -55,12 +55,18 @@ client.once('ready', () => {
 
 
 function auth(req){
-  console.log(req);
+  if(req === undefined) return false;
+  return (req.body.testAuth === 'test-auth-value') ? true : false;
 }
+
 // login
 app.post('/api/login/', (req, res) => {
-    botLogin();
-    res.send('bot logged in!');
+    if (auth(req) == true){
+      botLogin();
+      res.send('it worked');
+      return;
+    }
+    res.send('fail');
 });
 
 // logout
