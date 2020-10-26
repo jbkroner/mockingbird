@@ -92,4 +92,34 @@ app.post('/api/getVoiceChannels', (req, res) => {
   res.send(client.channels);
 })
 
+/**  joinVoiceChannel - join the birb-sounds channel */
+app.post('/api/joinVoiceChannel', (req, res) => {
+  if(auth(req) == false) {res.send('joining channel failed - auth');return;}
+  joinVoiceChannel(req);
+  res.send(req.body);
+})
+
+async function joinVoiceChannel(req){
+  // find the birb-sounds channel
+  channel = await client.channels.fetch(req.body.channelId);
+
+  // join the birb sounds channel
+  const connection = await channel.join();
+
+  // create a dispatcher
+  const dispatcher = connection.play(config.testFile, { volume: .5});
+
+  // print events for debug
+  dispatcher.on('start', () => {
+    console.log('audio.mp3 is now playing!');
+  });
+
+  // dc after the file has finished playing
+  dispatcher.on('finish', () => {
+    channel.leave();
+  });
+
+  return;
+}
+
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
