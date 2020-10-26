@@ -54,6 +54,9 @@ client.once('ready', () => {
 });
 
 
+function auth(req){
+  console.log(req);
+}
 // login
 app.post('/api/login/', (req, res) => {
     botLogin();
