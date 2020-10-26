@@ -78,5 +78,9 @@ app.post('/api/getChannels', (req, res) => {
   res.send(client.channels)
 })
 
+// get voice channels only
+app.post('/api/getVoiceChannels', (req, res) => {
+  res.send(client.channels);
+})
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
