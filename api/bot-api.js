@@ -123,9 +123,11 @@ async function joinVoiceChannel(req){
   return;
 }
 
+/** leaveVoiceChannel */
 app.post('/api/leaveVoiceChannel', (req, res) => {
   channel.leave();
   res.send(req.body);
 })
+
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
