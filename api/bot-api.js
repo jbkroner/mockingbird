@@ -17,7 +17,7 @@ const config = require('./config.json');
 // join users voice channel when they send a message
 client.on('message', async message => {
   if (message.member.voice.channel) {
-    const connection = await message.member.voice.channel.join();
+    const connection = await message.member.channevoice.l.join();
 
     // create a dispatcher
     const dispatcher = connection.play(config.testFile, { volume: .5});
@@ -115,12 +115,17 @@ async function joinVoiceChannel(req){
     console.log('audio.mp3 is now playing!');
   });
 
-  // dc after the file has finished playing
-  dispatcher.on('finish', () => {
-    channel.leave();
-  });
+  // // dc after the file has finished playing
+  // dispatcher.on('finish', () => {
+  //   channel.leave();
+  // });
 
   return;
 }
+
+app.post('/api/leaveVoiceChannel', (req, res) => {
+  channel.leave();
+  res.send(req.body);
+})
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
