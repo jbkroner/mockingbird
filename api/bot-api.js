@@ -54,12 +54,13 @@ client.once('ready', () => {
 });
 
 
+/** auth */
 function auth(req){
   if(req === undefined) return false;
   return (req.body.testAuth === 'test-auth-value') ? true : false;
 }
 
-// login
+/** login */
 app.post('/api/login/', (req, res) => {
     if (auth(req) == true){
       botLogin();
@@ -69,7 +70,7 @@ app.post('/api/login/', (req, res) => {
     res.send('fail');
 });
 
-// logout
+/** logout */
 app.post('/api/logout/', (req, res) => {
     /** discord bot login and logging */
     console.log('trying to logout bot...')
@@ -78,7 +79,7 @@ app.post('/api/logout/', (req, res) => {
     res.send('bot logged out!')
 });
 
-// getChannels
+/** getChannels */
 app.post('/api/getChannels', (req, res) => {
 
   // see if we have a valid client -- null is not the right thing to check for
@@ -87,7 +88,7 @@ app.post('/api/getChannels', (req, res) => {
   res.send(client.channels)
 })
 
-// get voice channels only
+/** getVoiceChannels */
 app.post('/api/getVoiceChannels', (req, res) => {
   res.send(client.channels);
 })
