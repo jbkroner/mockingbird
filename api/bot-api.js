@@ -131,10 +131,13 @@ async function joinVoiceChannel(req){
 /** leaveVoiceChannel */
 app.post('/api/leaveVoiceChannel', (req, res) => {
   channel = voiceConnectionMap.get(req.body.channelId);
-  console.log(channel);
+  if(channel === undefined) {
+    res.status(400).send('undefined channelId');
+    return;
+  }
   voiceConnectionMap.delete(req.body.channelId); 
   channel.disconnect();
-  res.send(req.body);
+  res.status(204).send();
 })
 
 /** playSample */
