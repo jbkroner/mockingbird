@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
@@ -144,20 +145,28 @@ app.post('/api/leaveVoiceChannel', (req, res) => {
 app.post('/api/playSample', (req, res) => {
 
   connection = voiceConnectionMap.get(req.body.channelId);
+  sample = req.body.sampleName;
   if(connection === undefined) {
-    res.send('channel id returned undefiend');
+    res.status(400).send('undefined channelId');
     return;
   }
-  
-  // create a dispatcher
-  const dispatcher = connection.play(req.body.sampleName, { volume: .5});
 
-  // print events for debug
-  dispatcher.on('start', () => {
-    console.log(`Now playing sample: ${req.body.sampleName}`);
-  });
+  try{
+    if (fs.existsSync(sample)){
+      // create a dispatcher
+      const dispatcher = connection.play(req.body.sampleName, { volume: .5});
 
-  res.send(req.body);
+      // print events for debug
+      dispatcher.on('start', () => {
+        console.log(`Now playing sample: ${req.body.sampleName}`);
+      });
+    }
+  } catch(err){
+    res.status(400).send('undefined sample');
+    return;
+  }
+
+  res.status(204).send();
 })
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
