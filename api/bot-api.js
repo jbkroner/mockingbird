@@ -130,8 +130,10 @@ async function joinVoiceChannel(req){
 
 /** leaveVoiceChannel */
 app.post('/api/leaveVoiceChannel', (req, res) => {
-  voiceConnectionMap.delete(req.body.channelId);
-  channel.leave();
+  channel = voiceConnectionMap.get(req.body.channelId);
+  console.log(channel);
+  voiceConnectionMap.delete(req.body.channelId); 
+  channel.disconnect();
   res.send(req.body);
 })
 
