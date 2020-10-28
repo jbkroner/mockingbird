@@ -13,28 +13,30 @@ const config = require('./config.json');
 
 
 /** discord audio stuff */
+voiceConnectionMap = new Map(); // map channelIds to Connections
+guildMap = new Map(); // map guildIds to guilds
 
 // join users voice channel when they send a message
-client.on('message', async message => {
-  if (message.member.voice.channel) {
-    const connection = await message.member.channevoice.l.join();
+// client.on('message', async message => {
+//   if (message.member.voice.channel) {
+//     const connection = await message.member.channelvoice.join();
 
-    // create a dispatcher
-    const dispatcher = connection.play(config.testFile, { volume: .5});
+//     // create a dispatcher
+//     const dispatcher = connection.play(config.testFile, { volume: .5});
 
-    dispatcher.on('start', () => {
-      console.log('audio.mp3 is now playing!');
-    });
+//     dispatcher.on('start', () => {
+//       console.log('audio.mp3 is now playing!');
+//     });
 
-    dispatcher.on('finish', () => {
-      console.log('audio.mp3 has finished playing!');
-      message.member.voice.channel.leave();
-    });
+//     dispatcher.on('finish', () => {
+//       console.log('audio.mp3 has finished playing!');
+//       message.member.voice.channel.leave();
+//     });
 
-    // Always remember to handle errors appropriately!
-    dispatcher.on('error', console.error);
-  }
-})
+//     // Always remember to handle errors appropriately!
+//     dispatcher.on('error', console.error);
+//   }
+// })
 
 let audioFiles = [];
 
@@ -107,6 +109,9 @@ async function joinVoiceChannel(req){
   // join the birb sounds channel
   const connection = await channel.join();
 
+  // map the channel id to the connection
+  voiceConnectionMap.set(req.body.channelId, connection);
+
   // create a dispatcher
   const dispatcher = connection.play(config.testFile, { volume: .5});
 
@@ -125,9 +130,29 @@ async function joinVoiceChannel(req){
 
 /** leaveVoiceChannel */
 app.post('/api/leaveVoiceChannel', (req, res) => {
+  voiceConnectionMap.delete(req.body.channelId);
   channel.leave();
   res.send(req.body);
 })
 
+/** playSample */
+app.post('/api/playSample', (req, res) => {
+
+  connection = voiceConnectionMap.get(req.body.channelId);
+  if(connection === undefined) {
+    res.send('channel id returned undefiend');
+    return;
+  }
+  
+  // create a dispatcher
+  const dispatcher = connection.play(req.body.sampleName, { volume: .5});
+
+  // print events for debug
+  dispatcher.on('start', () => {
+    console.log(`Now playing sample: ${req.body.sampleName}`);
+  });
+
+  res.send(req.body);
+})
 
 app.listen(port, () => console.log(`hello we are listing on port ${port}`));
