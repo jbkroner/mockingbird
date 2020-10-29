@@ -17,28 +17,6 @@ const config = require('./config.json');
 voiceConnectionMap = new Map(); // map channelIds to Connections
 guildMap = new Map(); // map guildIds to guilds
 
-// join users voice channel when they send a message
-// client.on('message', async message => {
-//   if (message.member.voice.channel) {
-//     const connection = await message.member.channelvoice.join();
-
-//     // create a dispatcher
-//     const dispatcher = connection.play(config.testFile, { volume: .5});
-
-//     dispatcher.on('start', () => {
-//       console.log('audio.mp3 is now playing!');
-//     });
-
-//     dispatcher.on('finish', () => {
-//       console.log('audio.mp3 has finished playing!');
-//       message.member.voice.channel.leave();
-//     });
-
-//     // Always remember to handle errors appropriately!
-//     dispatcher.on('error', console.error);
-//   }
-// })
-
 let audioFiles = [];
 
 app.use(cors());
