@@ -96,36 +96,28 @@ app.post('/api/getVoiceChannels', (req, res) => {
   res.send(client.channels);
 })
 
-/**  joinVoiceChannel - join the birb-sounds channel */
+/**  joinVoiceChannel - api endpoint */
 app.post('/api/joinVoiceChannel', (req, res) => {
-  if(auth(req) == false) {res.send('joining channel failed - auth');return;}
+  if(req.body.channelId === undefined){
+    res.status(400).send('undefined channelId');
+  }
+  if(voiceConnectionMap.get(req.body.channelId) != undefined) {
+      res.status(400).send('connection already mapped');
+      return;
+  }
   joinVoiceChannel(req);
-  res.send(req.body);
+  res.status(204).send('connection made and mapped');
 })
 
+/** joinVoiceChannel() - async helper function
+ * This helper functions expects that the req.body.channelId is not
+ * undefined and that the channelId is not already part of the voiceConnectionMap.
+ */
 async function joinVoiceChannel(req){
   // find the birb-sounds channel
   channel = await client.channels.fetch(req.body.channelId);
-
-  // join the birb sounds channel
   const connection = await channel.join();
-
-  // map the channel id to the connection
   voiceConnectionMap.set(req.body.channelId, connection);
-
-  // create a dispatcher
-  const dispatcher = connection.play(config.testFile, { volume: .5});
-
-  // print events for debug
-  dispatcher.on('start', () => {
-    console.log('audio.mp3 is now playing!');
-  });
-
-  // // dc after the file has finished playing
-  // dispatcher.on('finish', () => {
-  //   channel.leave();
-  // });
-
   return;
 }
 
