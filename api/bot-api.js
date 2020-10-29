@@ -93,7 +93,7 @@ app.post('/api/getChannels', (req, res) => {
 
 /** getVoiceChannels */
 app.post('/api/getVoiceChannels', (req, res) => {
-  res.send(client.channels);
+  res.send(client.channels.cache.filter(current => current.type === "voice"));
 })
 
 /**  joinVoiceChannel - api endpoint */
