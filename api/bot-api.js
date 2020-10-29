@@ -1,37 +1,27 @@
+/** express.js setup */
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
-
 const app = express();
 const port = 9000;
-
-
-/** discord imports */
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const config = require('./config.json');
-
-
-/** discord audio stuff */
-voiceConnectionMap = new Map(); // map channelIds to Connections
-guildMap = new Map(); // map guildIds to guilds
-
-let audioFiles = [];
-
 app.use(cors());
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// api functions
-function botLogin(){
-    client.login(config.key); 
-}
+/** discord.js setup */
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const config = require('./config.json');
+voiceConnectionMap = new Map(); // map channelIds to Connections
+guildMap = new Map(); // map guildIds to guilds
 
-// discord events
+/** log the bot in on server start */
+client.login(config.key); 
+
+/** discord event handlers */
 client.once('ready', () => {
-    console.log('bot ready!');
+    console.log('mockingbird is logged in! ready to receive commands...');
 });
 
 
@@ -40,25 +30,6 @@ function auth(req){
   if(req === undefined) return false;
   return (req.body.testAuth === 'test-auth-value') ? true : false;
 }
-
-/** login */
-app.post('/api/login/', (req, res) => {
-    if (auth(req) == true){
-      botLogin();
-      res.send('it worked');
-      return;
-    }
-    res.send('fail');
-});
-
-/** logout */
-app.post('/api/logout/', (req, res) => {
-    /** discord bot login and logging */
-    console.log('trying to logout bot...')
-    client.destroy(); 
-    console.log('bot logged out!');
-    res.send('bot logged out!')
-});
 
 /** getChannels */
 app.post('/api/getChannels', (req, res) => {
