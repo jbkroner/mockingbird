@@ -84,10 +84,6 @@ app.post('/api/logout/', (req, res) => {
 
 /** getChannels */
 app.post('/api/getChannels', (req, res) => {
-
-  // see if we have a valid client -- null is not the right thing to check for
-  if(client == null) res.send('client is null!')
-
   res.send(client.channels)
 })
 
